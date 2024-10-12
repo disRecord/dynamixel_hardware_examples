@@ -4,7 +4,7 @@
 <!-- Import Rviz colors -->
 <xacro:include filename="$(find open_manipulator_x_description)/urdf/open_manipulator_x.material.xacro" />
 
-<xacro:macro name="open_manipulator_x" params="parent *origin">
+<xacro:macro name="open_manipulator_x" params="parent link2_reversed:='false' *origin">
   <joint name="origin_to_link1" type="fixed">
     <xacro:insert_block name="origin" />
     <parent link="${parent}" />
@@ -41,8 +41,13 @@
   <!-- Joint 1 -->
   <joint name="joint1" type="revolute">
     <parent link="link1"/>
-    <child link="link2"/>
-    <origin xyz="0.012 0.0 0.017" rpy="0 0 0"/>
+	<child link="link2"/>
+	<xacro:unless value="${link2_reversed}" >
+		<origin xyz="0.012 0.0 0.017" rpy="0 0 0"/>
+	</xacro:unless>
+	<xacro:if value="${link2_reversed}" >
+		<origin xyz="0.012 0.0 0.017" rpy="0 0 3.1415"/>
+	</xacro:if>
     <axis xyz="0 0 1"/>
     <limit velocity="4.8" effort="1" lower="-2.82743338823" upper="2.82743338823" />
   </joint>
